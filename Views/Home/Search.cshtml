@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Tour";
+    Layout = ViewData["Layout"] as string ?? "_Layout";
+}
+
+<div class="container container-custom">
+
+    <div class="row">
+        @foreach (var tour in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img class="card-img-top" src="@tour.ImageUrl" alt="Tour Image">
+                    <div class="card-body">
+                        <h5 class="card-title">@tour.Name</h5>
+                        <p class="card-text">@tour.Description</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a asp-action="Details" asp-route-id="@tour.Id" class="btn btn-sm btn-outline-secondary">View Details</a>
+                                <a asp-action="AddToCart" asp-route-id="@tour.Id" class="btn btn-sm btn-outline-secondary">Add to Cart</a>
+                            </div>
+                            <small class="text-muted">@tour.Price.ToString("c")</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
