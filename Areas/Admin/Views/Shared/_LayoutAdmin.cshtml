@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Saigon Glisten Admin</title>
+
+    <link rel="stylesheet" href="../../LayoutAdmin/assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../../LayoutAdmin/assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../../LayoutAdmin/assets/css/style.css">
+    <link rel="shortcut icon" href="../../LayoutAdmin/assets/images/saigon-glisten.jpg" />
+    
+</head>
+<body>
+    <div class="container-scroller">
+        <!-- partial:../../partials/_navbar.html -->
+        <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo" href="@Url.Content("~/Home/Index")">><img src="../../LayoutAdmin/assets/images/logo.svg" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" href="@Url.Content("~/Home/Index")"><img src="../../LayoutAdmin/assets/images/logo-mini.svg" alt="logo" /></a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-stretch">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+                <div class="search-field d-none d-md-block">
+                    <form class="d-flex align-items-center h-100" action="#">
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <i class="input-group-text border-0 mdi mdi-magnify"></i>
+                            </div>
+                            <input type="text" class="form-control bg-transparent border-0" placeholder="Search projects">
+                        </div>
+                    </form>
+                </div>
+                <ul class="navbar-nav navbar-nav-right">
+                   @* những button có thể thêm trên header *@
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">                                                               
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                 <ul class="nav">                
+                 @*  =================================================================== *@
+                 
+                    <!-- Navbar Right Items -->
+                    <ul class="navbar-nav navbar-nav-right">   
+                            <!-- partial -->
+                            <li class="nav-item">
+                                <span class="menu-title">
+                                    <partial name="_LoginPartial"/>
+                                </span>
+                            </li>
+                        <!-- ... -->
+                        @if (User.IsInRole("Admin") || User.IsInRole("Company"))
+                        {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Content("~/Home/Index")">
+                                <span class="menu-title">Trang chủ</span>
+                                <i class="mdi mdi-home menu-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Product")">
+                                <span class="menu-title">Danh sách sản phẩm</span>
+                                <i class="mdi mdi-cart menu-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Add", "Product")">
+                                <span class="menu-title">Thêm sản phẩm</span>
+                                <i class="mdi mdi-plus menu-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Categories")">
+                               <span class="menu-title">Danh sách danh mục</span>
+                               <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Add", "Categories")">
+                                <span class="menu-title">Thêm danh mục</span>
+                                <i class="mdi mdi-plus menu-icon"></i>
+                            </a>
+                        </li>
+
+                        }
+                        <!-- ... -->
+                    </ul>
+                    @*  =================================================================== *@                                  
+                </ul>
+            </nav>
+
+            
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    @RenderBody()
+                </div>
+
+                <footer class="footer">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © bootstrapdash.com 2021</span>
+                        <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin template</a> from Bootstrapdash.com</span>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../LayoutAdmin/assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="../../LayoutAdmin/assets/js/off-canvas.js"></script>
+    <script src="../../LayoutAdmin/assets/js/hoverable-collapse.js"></script>
+    <script src="../../LayoutAdmin/assets/js/misc.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+

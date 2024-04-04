@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] </title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="~/WEBSAIGONGLISTEN.styles.css" asp-append-version="true" /> *@
+    <link rel="shortcut icon" href="../../LayoutAdmin/assets/images/saigon-glisten.jpg" />
+</head>
+<body class="d-flex flex-column h-100">
+    <header class="navbar navbar-expand navbar-dark sticky-top flex-column flex-md-row bd-navbar" style="background-color: white;">
+        <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Bootstrap">
+            <img src="../../LayoutAdmin/assets/images/saigon-glisten.jpg" alt="logo" style="width: 70px; height: 70px;" />
+        </a>
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav bd-navbar-nav flex-row me-auto">
+               
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Tour">Tour</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Introduce">Giới thiệu</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Blog">Blog</a>
+                </li>
+               
+            </ul>
+            <partial name="_LoginPartial" />
+        </div>
+
+    </header>
+    <main class="flex-shrink-0">
+      
+                       @RenderBody()
+ 
+
+    </main>
+    <footer class="footer mt-auto py-3 bg-body-tertiary">
+            &copy; 2024 - SAIGON GLISTEN - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </footer>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
