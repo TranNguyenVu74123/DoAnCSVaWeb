@@ -5,6 +5,7 @@ using WEBSAIGONGLISTEN.Repositories;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace WEBSAIGONGLISTEN.Areas.Admin.Controllers
 {
@@ -14,9 +15,12 @@ namespace WEBSAIGONGLISTEN.Areas.Admin.Controllers
     {
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly ApplicationDbContext _context;// day la hung
         public ProductController(IProductRepository productRepository,
-        ICategoryRepository categoryRepository)
+        ICategoryRepository categoryRepository,
+        ApplicationDbContext context)
         {
+            _context = context; // cho nay la hung
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
         }
@@ -155,6 +159,31 @@ namespace WEBSAIGONGLISTEN.Areas.Admin.Controllers
             await _productRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet("product/tour/{id}")]
+        public async Task<IActionResult> Tour()
+        {
+            var tours = _context.Products.ToList(); // Lấy danh sách tour từ cơ sở dữ liệu
+            return View(tours);
+        }
+
+        [HttpPost, ActionName("Search")]
+        public async Task<IActionResult> Search(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                // Trả về một View trống hoặc thông báo không tìm thấy.
+                return View("Search", new List<Product>());
+            }
+
+            var result = await _context.Products
+                .FromSqlRaw("SELECT * FROM Products WHERE Name LIKE '%' + @query + '%' OR (Description IS NOT NULL AND Description LIKE '%' + @query + '%')", query)
+                .ToListAsync();
+
+            // Trả về kết quả tìm kiếm qua View "Search" hoặc một View khác mà bạn muốn hiển thị kết quả
+            return View("Search", result);
+        }
+
 
     }
 }

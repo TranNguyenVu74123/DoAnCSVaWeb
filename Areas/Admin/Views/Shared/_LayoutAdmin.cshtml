@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../../LayoutAdmin/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="../../LayoutAdmin/assets/css/style.css">
     <link rel="shortcut icon" href="../../LayoutAdmin/assets/images/saigon-glisten.jpg" />
-    
+
 </head>
 <body>
     <div class="container-scroller">
@@ -23,8 +23,9 @@
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="mdi mdi-menu"></span>
                 </button>
+                <!-- Hung cap nhat -->
                 <div class="search-field d-none d-md-block">
-                    <form class="d-flex align-items-center h-100" action="#">
+                    <form class="d-flex align-items-center h-100" action="@Url.Action("Search", "Product")" method="get">
                         <div class="input-group">
                             <div class="input-group-prepend bg-transparent">
                                 <i class="input-group-text border-0 mdi mdi-magnify"></i>
@@ -33,8 +34,9 @@
                         </div>
                     </form>
                 </div>
+                <!-- End Hung cap nhat -->
                 <ul class="navbar-nav navbar-nav-right">
-                   @* những button có thể thêm trên header *@
+                    @* những button có thể thêm trên header *@
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
                     <span class="mdi mdi-menu"></span>
@@ -42,60 +44,60 @@
             </div>
         </nav>
         <!-- partial -->
-        <div class="container-fluid page-body-wrapper">                                                               
+        <div class="container-fluid page-body-wrapper">
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                 <ul class="nav">                
-                 @*  =================================================================== *@
-                 
+                <ul class="nav">
+                    @*  =================================================================== *@
+
                     <!-- Navbar Right Items -->
-                    <ul class="navbar-nav navbar-nav-right">   
-                            <!-- partial -->
-                            <li class="nav-item">
-                                <span class="menu-title">
-                                    <partial name="_LoginPartial"/>
-                                </span>
-                            </li>
+                    <ul class="navbar-nav navbar-nav-right">
+                        <!-- partial -->
+                        <li class="nav-item">
+                            <span class="menu-title">
+                                <partial name="_LoginPartial" />
+                            </span>
+                        </li>
                         <!-- ... -->
                         @if (User.IsInRole("Admin") || User.IsInRole("Company"))
                         {
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Content("~/Home/Index")">
-                                <span class="menu-title">Trang chủ</span>
-                                <i class="mdi mdi-home menu-icon"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "Product")">
-                                <span class="menu-title">Danh sách sản phẩm</span>
-                                <i class="mdi mdi-cart menu-icon"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Add", "Product")">
-                                <span class="menu-title">Thêm sản phẩm</span>
-                                <i class="mdi mdi-plus menu-icon"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "Categories")">
-                               <span class="menu-title">Danh sách danh mục</span>
-                               <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Add", "Categories")">
-                                <span class="menu-title">Thêm danh mục</span>
-                                <i class="mdi mdi-plus menu-icon"></i>
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Content("~/Home/Index")">
+                                    <span class="menu-title">Trang chủ</span>
+                                    <i class="mdi mdi-home menu-icon"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Product")">
+                                    <span class="menu-title">Danh sách sản phẩm</span>
+                                    <i class="mdi mdi-cart menu-icon"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Add", "Product")">
+                                    <span class="menu-title">Thêm sản phẩm</span>
+                                    <i class="mdi mdi-plus menu-icon"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Categories")">
+                                    <span class="menu-title">Danh sách danh mục</span>
+                                    <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Add", "Categories")">
+                                    <span class="menu-title">Thêm danh mục</span>
+                                    <i class="mdi mdi-plus menu-icon"></i>
+                                </a>
+                            </li>
                         }
                         <!-- ... -->
                     </ul>
-                    @*  =================================================================== *@                                  
+                    @*  =================================================================== *@
                 </ul>
             </nav>
 
-            
+
             <div class="main-panel">
                 <div class="content-wrapper">
                     @RenderBody()
@@ -119,4 +121,3 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
-

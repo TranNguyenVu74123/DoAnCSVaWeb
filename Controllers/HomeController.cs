@@ -38,7 +38,24 @@ namespace WEBSAIGONGLISTEN.Controllers
             return View(tours);
         }
 
-        /*public async Task<IActionResult> Search(string query)
+        // Hiển thị thông tin chi tiết sản phẩm
+        public async Task<IActionResult> Display(int? productId, int? quantity)
+        {
+            if (productId == null)
+            {
+                return NotFound();
+            }
+            var product = await _productRepository.GetByIdAsync(productId.Value);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            // Xử lý thêm cho quantity nếu cần
+            return View(product);
+        }
+
+
+        public async Task<IActionResult> Search(string query)
         {
             if (string.IsNullOrWhiteSpace(query))
             {
@@ -47,27 +64,29 @@ namespace WEBSAIGONGLISTEN.Controllers
             }
 
             var result = await _context.Products
-                .Where(p => p.Name.Contains(query) || (p.Description != null && p.Description.Contains(query)))
+                .Where(p => p.Name.Contains(query) /*|| (p.Description != null && p.Description.Contains(query))*/)
                 .ToListAsync();
 
             // Trả về kết quả tìm kiếm qua View "Tour" hoặc một View khác mà bạn muốn hiển thị kết quả
             return View("Search", result);
-        }*/
-
-        public async Task<IActionResult> Search(string term) // Sử dụng tham số "term" thay vì "query"
-    {
-        if (string.IsNullOrWhiteSpace(term))
-        {
-            return Json(new List<string>()); // Trả về một danh sách rỗng nếu truy vấn trống
         }
 
-        var result = await _context.Products
-            .Where(p => p.Name.Contains(term) || (p.Description != null && p.Description.Contains(term)))
-            .Select(p => p.Name) // Chọn chỉ các tên tour để trả về danh sách gợi ý
-            .Distinct() // Loại bỏ các giá trị trùng lặp
-            .ToListAsync();
+        /*public async Task<IActionResult> Search(string term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+            {
+                return Json(new List<string>());
+            }
 
-        return Json(result); // Trả về danh sách gợi ý dưới dạng JSON
-    }
+            var result = await _context.Products
+                .Where(p => p.Name.Contains(term) || (p.Description != null && p.Description.Contains(term)))
+                .Select(p => p.Name)
+                .Distinct()
+                .ToListAsync();
+
+            return Json("Search", result);
+        }*/
+
+
     }
 }
