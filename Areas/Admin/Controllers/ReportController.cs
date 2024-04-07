@@ -11,7 +11,7 @@ using WEBSAIGONGLISTEN.Repositories;
 namespace WEBSAIGONGLISTEN.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Company)]
     public class ReportController : Controller
     { 
         private readonly IProductRepository _productRepository;

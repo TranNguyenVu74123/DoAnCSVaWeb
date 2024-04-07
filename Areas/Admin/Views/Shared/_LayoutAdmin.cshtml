@@ -103,6 +103,15 @@
                                 </a>
                             </li>
                          }
+                          @if (User.IsInRole("Company")) 
+                         {
+                             <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Report")">
+                                    <span class="menu-title">Báo cáo và thống kê</span>
+                                    <i class="mdi mdi-account menu-icon"></i>
+                                </a>
+                            </li>
+                         }
                        
                         <!-- ... -->
                     </ul>
