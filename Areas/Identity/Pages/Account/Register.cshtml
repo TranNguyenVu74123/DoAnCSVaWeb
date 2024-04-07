@@ -39,12 +39,13 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.ConfirmPassword">Xác nhận mật khẩu</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-floating">
+           @*  </div>
+                 <div class="form-floating">
                 <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-control">
                     <option disabled selected>-Chọn vai trò-</option>
                 </select>
-            </div>
+            </div> *@
+               
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary mt-3">Đăng ký</button>
         </form>
     </div>

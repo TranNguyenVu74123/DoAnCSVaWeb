@@ -10,7 +10,8 @@ namespace WEBSAIGONGLISTEN.Models
         public DateTime OrderDate { get; set; }
         public decimal TotalPrice { get; set; }
 
-        public string ShippingAddress { get; set; }
+        public string HouseAddress { get; set; }
+        public string PickUpAddress { get; set; }
         public string Notes { get; set; }
 
         [ForeignKey("UserId")]

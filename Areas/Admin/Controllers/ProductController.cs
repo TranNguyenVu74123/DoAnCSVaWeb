@@ -160,7 +160,6 @@ namespace WEBSAIGONGLISTEN.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("product/tour/{id}")]
         public async Task<IActionResult> Tour()
         {
             var tours = _context.Products.ToList(); // Lấy danh sách tour từ cơ sở dữ liệu
@@ -168,7 +167,7 @@ namespace WEBSAIGONGLISTEN.Areas.Admin.Controllers
         }
 
         [HttpPost, ActionName("Search")]
-        public async Task<IActionResult> Search(string query)
+        public async Task<IActionResult> SearchAutocomplete(string query)
         {
             if (string.IsNullOrWhiteSpace(query))
             {

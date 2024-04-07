@@ -181,7 +181,8 @@ namespace WEBSAIGONGLISTEN.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ShippingAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HouseAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PickUpAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>

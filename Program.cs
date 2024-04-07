@@ -37,6 +37,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IProductRepository, EFProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
+// Trong ph??ng th?c ConfigureServices c?a class Startup
+builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
 
 
 var app = builder.Build();

@@ -62,5 +62,32 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+<script>
+    $(function () {
+        $("#searchInput").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "@Url.Action("SearchAutocomplete", "Home")",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.label,
+                                value: item.value
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 2, // Số ký tự tối thiểu trước khi gợi ý bắt đầu
+            select: function (event, ui) {
+                // Redirect đến trang hiển thị chi tiết sản phẩm khi chọn một gợi ý
+                window.location.href = '@Url.Action("Display", "Home")?productId=' + ui.item.value;
+            }
+        });
+    });
+</script>
 </body>
 </html>

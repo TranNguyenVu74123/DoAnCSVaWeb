@@ -256,6 +256,10 @@ namespace WEBSAIGONGLISTEN.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("HouseAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Notes")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -263,7 +267,7 @@ namespace WEBSAIGONGLISTEN.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ShippingAddress")
+                    b.Property<string>("PickUpAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

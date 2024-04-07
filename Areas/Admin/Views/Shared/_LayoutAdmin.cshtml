@@ -16,7 +16,7 @@
         <!-- partial:../../partials/_navbar.html -->
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo" href="@Url.Content("~/Home/Index")">><img src="../../LayoutAdmin/assets/images/logo.svg" alt="logo" /></a>
+                @* <a class="navbar-brand brand-logo" href="@Url.Content("~/Home/Index")">><img src="../../LayoutAdmin/assets/images/logo.svg" alt="logo" /></a> *@
                 <a class="navbar-brand brand-logo-mini" href="@Url.Content("~/Home/Index")"><img src="../../LayoutAdmin/assets/images/logo-mini.svg" alt="logo" /></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-stretch">
@@ -41,6 +41,9 @@
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
                     <span class="mdi mdi-menu"></span>
                 </button>
+                 <!-- partial -->
+                 <partial name="_LoginPartial" />
+
             </div>
         </nav>
         <!-- partial -->
@@ -51,12 +54,6 @@
 
                     <!-- Navbar Right Items -->
                     <ul class="navbar-nav navbar-nav-right">
-                        <!-- partial -->
-                        <li class="nav-item">
-                            <span class="menu-title">
-                                <partial name="_LoginPartial" />
-                            </span>
-                        </li>
                         <!-- ... -->
                         @if (User.IsInRole("Admin") || User.IsInRole("Company"))
                         {
@@ -91,6 +88,22 @@
                                 </a>
                             </li>
                         }
+                         @if (User.IsInRole("Admin")) 
+                         {
+                              <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Account")">
+                                    <span class="menu-title">Quản lý người dùng</span>
+                                    <i class="mdi mdi-account menu-icon"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Report")">
+                                    <span class="menu-title">Báo cáo và thống kê</span>
+                                    <i class="mdi mdi-account menu-icon"></i>
+                                </a>
+                            </li>
+                         }
+                       
                         <!-- ... -->
                     </ul>
                     @*  =================================================================== *@
@@ -105,8 +118,8 @@
 
                 <footer class="footer">
                     <div class="container-fluid d-flex justify-content-between">
-                        <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © bootstrapdash.com 2021</span>
-                        <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin template</a> from Bootstrapdash.com</span>
+                        <span class="text-muted d-block text-center text-sm-start d-sm-inline-block"> &copy; 2024 - SAIGON GLISTEN - Đồ án môn học</span>
+                       @*  <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin template</a> from Bootstrapdash.com</span> *@
                     </div>
                 </footer>
             </div>
