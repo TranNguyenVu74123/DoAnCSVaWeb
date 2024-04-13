@@ -17,7 +17,7 @@ namespace WEBSAIGONGLISTEN.Areas.Admin.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<AccountController> _logger;
-        private readonly int _pageSize = 5;
+        private readonly int _pageSize = 10;
 
         public AccountController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ILogger<AccountController> logger)
         {

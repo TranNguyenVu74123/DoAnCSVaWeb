@@ -34,3 +34,21 @@
         }
     </tbody>
 </table>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+        {
+            <li class="page-item @(i == (int)ViewData["CurrentPage"] ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

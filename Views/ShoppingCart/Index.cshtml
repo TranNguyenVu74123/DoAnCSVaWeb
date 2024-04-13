@@ -1,6 +1,7 @@
 ﻿@model ShoppingCart
-
-<h4>Giỏ Hàng</h4>
+<!-- Thêm thư viện Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+<h4>Tour của bạn</h4>
 <div class="container">
     <div class="row">
         <div class="col-xl-8">
@@ -18,7 +19,7 @@
                                 </div>
                                 <div class="flex-shrink-0 ms-2">
                                     <ul class="list-inline mb-0 font-size-16">
-                                        <li class="list-inline-item">
+                                       @*  <li class="list-inline-item">
                                             <form asp-action="Increase" asp-controller="ShoppingCart" method="post">
                                                 <input type="hidden" name="productId" value="@item.ProductId" />
                                                 <button type="submit" class="btn btn-primary btn-sm">+</button>
@@ -29,7 +30,7 @@
                                                 <input type="hidden" name="productId" value="@item.ProductId" />
                                                 <button type="submit" class="btn btn-primary btn-sm">-</button>
                                             </form>
-                                        </li>
+                                        </li> *@
                                         <li class="list-inline-item">
                                             <form asp-action="RemoveFromCart" asp-controller="ShoppingCart" method="post">
                                                 <input type="hidden" name="productId" value="@item.ProductId" />
@@ -65,7 +66,7 @@
             }
             else
             {
-                <h4>Giỏ hàng của bạn rỗng</h4>
+                <h4>Gói Tour của bạn rỗng</h4>
             }
              <!-- end card -->
             <div class="row my-4">

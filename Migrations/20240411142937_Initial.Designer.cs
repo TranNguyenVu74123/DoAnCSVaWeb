@@ -12,7 +12,7 @@ using WEBSAIGONGLISTEN.Models;
 namespace WEBSAIGONGLISTEN.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240407115544_Initial")]
+    [Migration("20240411142937_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

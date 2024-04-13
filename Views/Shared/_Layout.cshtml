@@ -5,13 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    
     <link rel="stylesheet" href="~/css/autocomplete.css" /> <!-- Liên kết đến file CSS chứa định dạng cho ô gợi ý -->
     <link rel="shortcut icon" href="../../LayoutAdmin/assets/images/saigon-glisten.jpg" />
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-	<!-- autocomplete -->
-    <script src="~/js/search-autocomplete.js"></script>
+    <!-- Thêm thư viện Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <style>
+        .search-container {
+            position: relative;
+        }
+
+        .searchInput {
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            margin-right: 10px;
+            width: 300px;
+        }
+
+        .autocompleteDropdown {
+            position: absolute;
+            z-index: 1000;
+            width: 300px;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none; /* Bắt đầu ẩn dropdown */
+        }
+
+            .autocompleteDropdown.show {
+                display: block; /* Hiển thị dropdown khi được kích hoạt */
+            }
+
+            .autocompleteDropdown li {
+                padding: 8px 12px;
+                cursor: pointer;
+            }
+
+                .autocompleteDropdown li:hover {
+                    background-color: #f2f2f2;
+                }
+    </style>
 </head>
 <body class="d-flex flex-column h-100">
     <header class="navbar navbar-expand navbar-dark sticky-top flex-column flex-md-row bd-navbar" style="background-color: white;">
@@ -21,15 +64,17 @@
 
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav bd-navbar-nav flex-row me-auto">
-
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
                 </li>
 
-                <form id="searchForm" class="d-flex" asp-controller="Home" asp-action="Search" method="get">
-                    <input id="searchInput" class="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search" name="query">
-                    <div class="autocomplete-suggestions"></div> <!-- Thêm ô gợi ý -->
-                </form>
+                <li class="nav-item">
+                    <form id="searchForm" class="search-container" asp-controller="Home" asp-action="Search" method="post" autocomplete="on" >
+                        <input id="searchInput" class="form-control searchInput me-2" type="search" placeholder="Tìm kiếm" aria-label="Search" name="query">
+                        <ul id="autocompleteDropdown" class="autocompleteDropdown" aria-labelledby="searchInput"></ul> <!-- Dropdown autocomplete -->
+                        <button id="searchButton" class="btn btn-primary" type="submit">Tìm kiếm</button> <!-- Nút SearchButton -->
+                    </form>
+                </li>
 
                 @if (User.IsInRole("Admin") || User.IsInRole("Company"))
                 {
@@ -40,14 +85,17 @@
             </ul>
             <partial name="_LoginPartial" />
 
+            @if (User.IsInRole("Customer"))
+            {
             <form asp-action="Index" asp-controller="ShoppingCart" class="d-flex">
                 <button class="btn btn-outline-dark" type="submit">
-                    <i class="bi-cart-fill me-1"></i>
-                    Cart
+                     <i class="fas fa-suitcase me-1"></i>
+                    Tour của bạn 
                 </button>
             </form>
+            }
+            
         </div>
-
     </header>
     <main class="flex-shrink-0">
         <div class="container  container-custom">
@@ -61,33 +109,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-<script>
-    $(function () {
-        $("#searchInput").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: "@Url.Action("SearchAutocomplete", "Home")",
-                    type: "POST",
-                    dataType: "json",
-                    data: { term: request.term },
-                    success: function (data) {
-                        response($.map(data, function (item) {
-                            return {
-                                label: item.label,
-                                value: item.value
-                            };
-                        }));
-                    }
-                });
-            },
-            minLength: 2, // Số ký tự tối thiểu trước khi gợi ý bắt đầu
-            select: function (event, ui) {
-                // Redirect đến trang hiển thị chi tiết sản phẩm khi chọn một gợi ý
-                window.location.href = '@Url.Action("Display", "Home")?productId=' + ui.item.value;
-            }
-        });
-    });
-</script>
+   @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

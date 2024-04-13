@@ -13,16 +13,26 @@ namespace WEBSAIGONGLISTEN.Areas.Admin.Controllers
     {
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly int _pageSize = 10;
         public CategoriesController(IProductRepository productRepository, ICategoryRepository
         categoryRepository)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-        var category = await _categoryRepository.GetAllAsync();
-            return View(category);
+            var allCategories = await _categoryRepository.GetAllAsync();
+
+            int totalCategories = allCategories.Count();
+            int totalPages = (int)Math.Ceiling((double)totalCategories / _pageSize);
+
+            var paginatedCategories = allCategories.Skip((page - 1) * _pageSize).Take(_pageSize).ToList();
+
+            ViewData["TotalPages"] = totalPages;
+            ViewData["CurrentPage"] = page;
+
+            return View(paginatedCategories);
         }
 
         [HttpGet("display/{id}")]

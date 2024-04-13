@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
+using Owl.reCAPTCHA;
 using WEBSAIGONGLISTEN.Models;
 using WEBSAIGONGLISTEN.Repositories;
 
@@ -39,7 +41,15 @@ builder.Services.AddScoped<IProductRepository, EFProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 // Trong ph??ng th?c ConfigureServices c?a class Startup
 builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
+builder.Services.AddScoped<UserManager<ApplicationUser>>();
+builder.Services.AddScoped<SignInManager<ApplicationUser>>();
+builder.Services.AddScoped<IPasswordHasher<ApplicationUser>, CustomPasswordHasher<ApplicationUser>>();
 
+builder.Services.AddreCAPTCHAV2(x =>
+{
+    x.SiteKey = "6LcorbkpAAAAAOSZZ5kTimR5bsbRmU4TeErp84bO";
+    x.SiteSecret = "6LcorbkpAAAAAC5oGihIiVHY50_IsXRSnxrQUnHA";
+});
 
 var app = builder.Build();
 
@@ -53,9 +63,11 @@ app.UseStaticFiles();
 app.UseSession();
 // ??t tr??c UseRouting
 
-app.UseRouting();
-app.UseAuthentication(); ;
 
+
+app.UseRouting();
+
+app.UseAuthentication(); ;
 app.UseAuthorization();
 
 
@@ -63,18 +75,54 @@ app.UseAuthorization();
 //    name: "default",
 //    pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapControllerRoute(
+//      name: "Admin",
+//      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+//    endpoints.MapControllerRoute(
+//        name: "Company",
+//        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+//    endpoints.MapControllerRoute(
+//      name: "default",
+//      pattern: "{controller=Home}/{action=Index}/{id?}");
+//    endpoints.MapControllerRoute(
+//       name: "search",
+//       pattern: "product/search",
+//       defaults: new { controller = "Product", action = "Search" },
+//       constraints: new { httpMethod = new HttpMethodRouteConstraint("POST") }
+//   );
+//});
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
-      name: "Admin",
-      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+        name: "AdminArea",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+
     endpoints.MapControllerRoute(
-        name: "Company",
-        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+        name: "AdminProductSearch",
+        pattern: "{area:exists}/{controller=Product}/search",  // ???ng d?n ??n action "Search"
+        defaults: new { action = "Search" },
+        constraints: new { area = "Admin", httpMethod = new HttpMethodRouteConstraint("POST") }
+    );
+
     endpoints.MapControllerRoute(
-      name: "default",
-      pattern: "{controller=Home}/{action=Index}/{id?}");
+       name: "AdminCategorySearch",
+       pattern: "{area:exists}/{controller=Product}/searchcategory",  // ???ng d?n ??n action "SearchCategory"
+       defaults: new { controller = "Product", action = "SearchCategory" },  // Thêm action "SearchCategory" ? ?ây
+       constraints: new { area = "Admin", httpMethod = new HttpMethodRouteConstraint("POST") }
+   );
+
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
 });
+
+
 
 app.MapRazorPages();
 app.Run();

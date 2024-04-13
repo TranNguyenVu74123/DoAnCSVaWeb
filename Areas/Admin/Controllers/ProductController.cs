@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using WEBSAIGONGLISTEN.Models;
 using WEBSAIGONGLISTEN.Repositories;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
 namespace WEBSAIGONGLISTEN.Areas.Admin.Controllers
 {
@@ -15,20 +15,37 @@ namespace WEBSAIGONGLISTEN.Areas.Admin.Controllers
     {
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ILogger<AccountController> _logger;
         private readonly ApplicationDbContext _context;// day la hung
+        private readonly int _pageSize = 10;
         public ProductController(IProductRepository productRepository,
         ICategoryRepository categoryRepository,
-        ApplicationDbContext context)
+        ApplicationDbContext context,
+        UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ILogger<AccountController> logger)
         {
             _context = context; // cho nay la hung
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _logger = logger;
         }
         // Hiển thị danh sách sản phẩm
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var products = await _productRepository.GetAllAsync();
-            return View(products);
+            var allProducts = await _productRepository.GetAllAsync();
+
+            int totalProducts = allProducts.Count();
+            int totalPages = (int)Math.Ceiling((double)totalProducts / _pageSize);
+
+            var paginatedProducts = allProducts.Skip((page - 1) * _pageSize).Take(_pageSize).ToList();
+
+            ViewData["TotalPages"] = totalPages;
+            ViewData["CurrentPage"] = page;
+
+            return View(paginatedProducts);
         }
         // Hiển thị form thêm sản phẩm mới
         public async Task<IActionResult> Add()
@@ -160,14 +177,8 @@ namespace WEBSAIGONGLISTEN.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Tour()
-        {
-            var tours = _context.Products.ToList(); // Lấy danh sách tour từ cơ sở dữ liệu
-            return View(tours);
-        }
-
-        [HttpPost, ActionName("Search")]
-        public async Task<IActionResult> SearchAutocomplete(string query)
+        [HttpPost]
+        public async Task<IActionResult> Search(string query, string searchType)
         {
             if (string.IsNullOrWhiteSpace(query))
             {
@@ -175,13 +186,46 @@ namespace WEBSAIGONGLISTEN.Areas.Admin.Controllers
                 return View("Search", new List<Product>());
             }
 
-            var result = await _context.Products
-                .FromSqlRaw("SELECT * FROM Products WHERE Name LIKE '%' + @query + '%' OR (Description IS NOT NULL AND Description LIKE '%' + @query + '%')", query)
-                .ToListAsync();
+            if (searchType == "product")
+            {
+                // Chuyển đổi query để tìm kiếm các sản phẩm chứa các từ được phân tách bởi khoảng trắng
+                var keywords = query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            // Trả về kết quả tìm kiếm qua View "Search" hoặc một View khác mà bạn muốn hiển thị kết quả
-            return View("Search", result);
+                var products = await _context.Products
+                    .Where(p => keywords.Any(keyword => p.Name.Contains(keyword)))
+                    .ToListAsync();
+
+                return View("Search", products);
+            }
+            else if (searchType == "category")
+            {
+                // Chuyển đổi query để tìm kiếm các sản phẩm chứa các từ được phân tách bởi khoảng trắng
+                var keywords = query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                var categories = await _context.Categories
+                    .Where(c => keywords.Any(keyword => c.Name.Contains(keyword)))
+                    .ToListAsync();
+
+                return View("SearchCategory", categories);
+            }
+            else if (searchType == "user")
+            {
+                // Chuyển đổi query để tìm kiếm các sản phẩm chứa các từ được phân tách bởi khoảng trắng
+                var keywords = query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                var users = _userManager.Users
+                    .Where(u => keywords.Any(keyword => u.UserName.Contains(keyword) || u.Email.Contains(keyword)))
+                    .OrderBy(u => u.UserName);
+
+                var searchResults = await users.ToListAsync();
+
+                return View("SearchUser", searchResults);
+            }
+
+            return NotFound(); // Trong trường hợp searchType không hợp lệ
         }
+
+
 
 
     }

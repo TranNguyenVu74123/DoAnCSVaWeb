@@ -25,15 +25,36 @@
                 </button>
                 <!-- Hung cap nhat -->
                 <div class="search-field d-none d-md-block">
-                    <form class="d-flex align-items-center h-100" action="@Url.Action("Search", "Product")" method="get">
+                    <form class="d-flex align-items-center h-100" action="@Url.Action("Search", "Product")" method="post">
                         <div class="input-group">
-                            <div class="input-group-prepend bg-transparent">
-                                <i class="input-group-text border-0 mdi mdi-magnify"></i>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text mdi mdi-magnify"></span>
                             </div>
-                            <input type="text" class="form-control bg-transparent border-0" placeholder="Search projects">
+                            <input type="text" class="form-control" name="query" placeholder="Tìm kiếm">
+                             @if (User.IsInRole("Admin"))
+                            {
+                            <div class="input-group-append">
+                                <select class="form-select custom-select" name="searchType">
+                                    <option value="product">Sản phẩm</option>
+                                    <option value="category">Danh mục</option>
+                                    <option value="user">Người dùng</option>
+                                </select>
+                            </div>
+                            }
+                            @if (User.IsInRole("Company"))
+                            {
+                            <div class="input-group-append">
+                                <select class="form-select custom-select" name="searchType">
+                                    <option value="product">Sản phẩm</option>
+                                    <option value="category">Danh mục</option>
+                                </select>
+                            </div>
+                            }
                         </div>
+                        <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
                     </form>
                 </div>
+
                 <!-- End Hung cap nhat -->
                 <ul class="navbar-nav navbar-nav-right">
                     @* những button có thể thêm trên header *@
@@ -97,10 +118,15 @@
                                     <i class="mdi mdi-account menu-icon"></i>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                           @*  <li class="nav-item">
                                 <a class="nav-link" href="@Url.Action("Index", "Report")">
                                     <span class="menu-title">Báo cáo và thống kê</span>
                                     <i class="mdi mdi-account menu-icon"></i>
+                                </a>
+                            </li> *@
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "Transactionmanagement")">
+                                    <span class="menu-title">Quản lý giao dịch</span>
                                 </a>
                             </li>
                          }
@@ -142,5 +168,16 @@
     <script src="../../LayoutAdmin/assets/js/misc.js"></script>
 
     @RenderSection("Scripts", required: false)
+
+    <script>
+    function validateSearchForm() {
+        var query = document.getElementById('searchQuery').value;
+        if (query.trim() === '') {
+            return false; // Không gửi biểu mẫu nếu ô tìm kiếm trống
+        }
+        return true; // Gửi biểu mẫu nếu ô tìm kiếm không trống
+    }
+</script>
+
 </body>
 </html>
